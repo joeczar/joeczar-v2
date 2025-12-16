@@ -4,106 +4,46 @@ This plan outlines atomic commits for building the foundation stack. Each commit
 
 ---
 
-## Phase 1: Project Initialization
+## Phase 1: Project Initialization ✅ COMPLETE
 
-### Commit 1: Initialize Nuxt 3 project
-```bash
-pnpm dlx nuxi@latest init joeczar-v2
-cd joeczar-v2
-git init
-git add .
-git commit -m "chore: initialize Nuxt 3 project"
-```
+### Commit 1: Initialize Nuxt 3 project ✅
+- `6478046` - chore: initialize Nuxt 3 project with content module
+- Scaffolded with @nuxt/content, fonts, image, icons
+- **Note:** pnpm 10 blocks native builds by default. Added `pnpm.onlyBuiltDependencies` to package.json
 
-**Verification:** `pnpm dev` starts without errors
+**Verification:** ✅ `pnpm dev` starts without errors
 
 ---
 
-### Commit 2: Add TresJS and Three.js dependencies
-```bash
-pnpm add @tresjs/nuxt @tresjs/cientos three
-```
+### Commit 2: Add TresJS and Three.js dependencies ✅
+- `0f57e54` - feat: add TresJS and Three.js dependencies
 
-Update `nuxt.config.ts`:
-```typescript
-export default defineNuxtConfig({
-  devtools: { enabled: true },
-  modules: [
-    '@tresjs/nuxt'
-  ],
-  tres: {
-    devtools: true
-  }
-})
-```
-
-```bash
-git add .
-git commit -m "feat: add TresJS and Three.js dependencies"
-```
-
-**Verification:** `pnpm dev` starts, no module errors
+**Verification:** ✅ `pnpm dev` starts, no module errors
 
 ---
 
-### Commit 3: Add Tailwind CSS
-```bash
-pnpm add -D @nuxtjs/tailwindcss
-```
+### Commit 3: Add Tailwind CSS ✅
+- `736b0ce` - feat: add Tailwind CSS with custom theme
+- Custom palette: void, smoke, ash, silver, bone
+- Accent colors: ember (music), signal (work), pulse (code)
 
-Update `nuxt.config.ts` to add the module:
-```typescript
-modules: [
-  '@nuxtjs/tailwindcss',
-  '@tresjs/nuxt'
-]
-```
-
-Create `tailwind.config.js` with custom theme (colors, fonts, animations).
-
-```bash
-git add .
-git commit -m "feat: add Tailwind CSS with custom theme"
-```
-
-**Verification:** Tailwind classes work in components
+**Verification:** ✅ Tailwind classes work in components
 
 ---
 
-### Commit 4: Add VueUse core utilities
-```bash
-pnpm add @vueuse/core
-```
+### Commit 4: Add VueUse core utilities ✅
+- `3330585` - chore: add @vueuse/core utilities
 
-```bash
-git add .
-git commit -m "chore: add @vueuse/core utilities"
-```
-
-**Verification:** Package installs without conflicts
+**Verification:** ✅ Package installs without conflicts
 
 ---
 
-### Commit 5: Configure base CSS and fonts
-Create `assets/css/main.css` with:
-- Tailwind directives
-- Base layer styles (bg-void, text-bone, antialiased)
-- Selection styling
-- Utility classes (.text-gradient)
+### Commit 5: Configure base CSS and fonts ✅
+- `3c69706` - feat: add base CSS and font configuration
+- **Note:** Nuxt 4 with `compatibilityVersion: 4` uses `app/` as source root
+- Assets must go in `app/assets/`, not root `assets/`
 
-Update `nuxt.config.ts`:
-```typescript
-css: ['~/assets/css/main.css']
-```
-
-Add Google Fonts links in `app.head`.
-
-```bash
-git add .
-git commit -m "feat: add base CSS and font configuration"
-```
-
-**Verification:** Page renders with dark background and correct fonts
+**Verification:** ✅ Page renders with dark background and correct fonts
 
 ---
 
