@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-void text-bone antialiased;
+  }
+
+  body {
+    @apply min-h-screen overflow-x-hidden;
+  }
+
+  ::selection {
+    @apply bg-signal/30 text-bone;
+  }
+}
+
+@layer components {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r;
+  }
+}
