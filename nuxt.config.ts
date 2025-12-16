@@ -2,8 +2,12 @@
 export default defineNuxtConfig({
   modules: [
     '@nuxt/content',
+    '@tresjs/nuxt'
   ],
   devtools: { enabled: true },
+  tres: {
+    devtools: true
+  },
   future: {
     compatibilityVersion: 4,
   },
