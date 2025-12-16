@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   modules: [
     '@nuxt/content',
+    '@nuxtjs/tailwindcss',
     '@tresjs/nuxt'
   ],
   devtools: { enabled: true },
