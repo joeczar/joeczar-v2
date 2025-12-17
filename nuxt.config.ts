@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devServer: {
     port: 3333
   },
-  modules: ['@nuxt/content', '@tresjs/nuxt', 'nuxt-og-image', 'shadcn-nuxt'],
+  modules: ['@nuxt/content', '@nuxt/eslint', '@tresjs/nuxt', 'nuxt-og-image', 'shadcn-nuxt'],
   shadcn: {
     prefix: '',
     componentDir: './app/components/ui'
@@ -33,12 +33,9 @@ export default defineNuxtConfig({
       title: 'Joe Czarnecki',
       meta: [
         { name: 'description', content: 'Musician · Maker · Developer' },
-        // Open Graph (image handled by nuxt-og-image)
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        // Component-level SEO via useSeoMeta is preferred, but these are good defaults
         { property: 'og:title', content: 'Joe Czarnecki' },
         { property: 'og:description', content: 'Musician · Maker · Developer' },
-        { property: 'og:image', content: 'https://joeczarnecki.com/pwa-512x512.png' }, // Placeholder domain
         { name: 'twitter:card', content: 'summary_large_image' }
       ],
       link: [

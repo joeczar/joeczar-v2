@@ -13,7 +13,7 @@ const meshRef = ref()
 
 const { onBeforeRender } = useLoop()
 
-onBeforeRender(({ elapsed }) => {
+onBeforeRender(({ elapsed }: { elapsed: number }) => {
   if (meshRef.value) {
     // Always rotate, but faster when active
     const speed = props.isActive ? 1 : 0.3

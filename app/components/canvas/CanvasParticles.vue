@@ -92,7 +92,7 @@ onUnmounted(() => {
 
 // Animation loop - TresJS v5 uses useLoop instead of useRenderLoop
 const { onBeforeRender } = useLoop()
-onBeforeRender(({ elapsed }) => {
+onBeforeRender(({ elapsed }: { elapsed: number }) => {
   uniforms.uTime.value = elapsed
   uniforms.uMouse.value.set(props.mouse.x, props.mouse.y)
 

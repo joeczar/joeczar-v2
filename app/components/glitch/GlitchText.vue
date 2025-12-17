@@ -1,4 +1,5 @@
 <script setup lang="ts">
+/* eslint-disable vue/no-mutating-props */
 interface Props {
   lines: string[]
   fontSizes: string[]
@@ -10,7 +11,7 @@ interface Props {
   viewportOffset: { x: number; y: number }
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const emit = defineEmits<{
   click: []
@@ -36,7 +37,7 @@ const emit = defineEmits<{
       <span
         v-for="(line, index) in lines"
         :key="line"
-        :ref="el => { if (el) lineRefs[index].value = el as HTMLElement }"
+        :ref="(el) => { if (el && lineRefs[index]) lineRefs[index].value = el as HTMLElement }"
         class="block"
       >
         <span

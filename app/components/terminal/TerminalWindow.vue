@@ -4,7 +4,7 @@ interface Props {
   host?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   user: 'joe',
   host: 'void'
 })

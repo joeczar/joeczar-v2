@@ -30,7 +30,7 @@ export function useFitText(lines: string[], baseFontVW = 15) {
           const textEl = lineRef.value.querySelector('span') as HTMLElement
           if (textEl) {
             const textWidth = textEl.offsetWidth
-            if (textWidth > 0) {
+            if (textWidth > 0 && fontSizes[index]) {
               const scale = containerWidth / textWidth
               fontSizes[index].value = `${baseFontPx * scale}px`
             }

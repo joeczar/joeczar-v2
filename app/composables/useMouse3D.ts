@@ -13,15 +13,15 @@ export function useMouse3D() {
   }
 
   function handleTouchMove(event: TouchEvent) {
-    if (event.touches.length > 0) {
-      const touch = event.touches[0]
+    const touch = event.touches[0]
+    if (touch) {
       updatePosition(touch.clientX, touch.clientY)
     }
   }
 
   function handleTouchStart(event: TouchEvent) {
-    if (event.touches.length > 0) {
-      const touch = event.touches[0]
+    const touch = event.touches[0]
+    if (touch) {
       updatePosition(touch.clientX, touch.clientY)
     }
   }

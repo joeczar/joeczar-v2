@@ -28,7 +28,7 @@ export function useConceptPicker() {
 
   // Pick random concept
   function pickRandom(): Concept {
-    return CONCEPTS[Math.floor(Math.random() * CONCEPTS.length)]
+    return CONCEPTS[Math.floor(Math.random() * CONCEPTS.length)] ?? 'canvas'
   }
 
   // Initialize - call this on mount
@@ -56,10 +56,10 @@ export function useConceptPicker() {
   }
 
   // Cycle to next concept (for Konami code)
-  function toggle() {
+  function toggle(): Concept {
     const currentIndex = CONCEPTS.indexOf(currentConcept.value)
     const nextIndex = (currentIndex + 1) % CONCEPTS.length
-    const next = CONCEPTS[nextIndex]
+    const next = CONCEPTS[nextIndex] ?? 'canvas'
     savePreference(next)
     currentConcept.value = next
     return next

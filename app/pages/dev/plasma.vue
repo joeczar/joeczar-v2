@@ -99,42 +99,42 @@ const gridHeight = computed(() => GRID_ROWS.value * (LED_SIZE.value + LED_GAP.va
         <label class="text-silver flex justify-between">
           <span>Columns: {{ GRID_COLS }}</span>
         </label>
-        <input v-model.number="GRID_COLS" type="range" min="10" max="120" class="w-full" />
+        <input v-model.number="GRID_COLS" type="range" min="10" max="120" class="w-full" >
       </div>
 
       <div class="space-y-1">
         <label class="text-silver flex justify-between">
           <span>Rows: {{ GRID_ROWS }}</span>
         </label>
-        <input v-model.number="GRID_ROWS" type="range" min="5" max="60" class="w-full" />
+        <input v-model.number="GRID_ROWS" type="range" min="5" max="60" class="w-full" >
       </div>
 
       <div class="space-y-1">
         <label class="text-silver flex justify-between">
           <span>LED Size: {{ LED_SIZE }}px</span>
         </label>
-        <input v-model.number="LED_SIZE" type="range" min="4" max="40" class="w-full" />
+        <input v-model.number="LED_SIZE" type="range" min="4" max="40" class="w-full" >
       </div>
 
       <div class="space-y-1">
         <label class="text-silver flex justify-between">
           <span>Gap: {{ LED_GAP }}px</span>
         </label>
-        <input v-model.number="LED_GAP" type="range" min="0" max="20" class="w-full" />
+        <input v-model.number="LED_GAP" type="range" min="0" max="20" class="w-full" >
       </div>
 
       <div class="space-y-1">
         <label class="text-silver flex justify-between">
           <span>Scale: {{ PLASMA_SCALE.toFixed(2) }}</span>
         </label>
-        <input v-model.number="PLASMA_SCALE" type="range" min="0.02" max="0.5" step="0.01" class="w-full" />
+        <input v-model.number="PLASMA_SCALE" type="range" min="0.02" max="0.5" step="0.01" class="w-full" >
       </div>
 
       <div class="space-y-1">
         <label class="text-silver flex justify-between">
           <span>Speed: {{ PLASMA_SPEED.toFixed(3) }}</span>
         </label>
-        <input v-model.number="PLASMA_SPEED" type="range" min="0.005" max="0.1" step="0.005" class="w-full" />
+        <input v-model.number="PLASMA_SPEED" type="range" min="0.005" max="0.1" step="0.005" class="w-full" >
       </div>
 
       <div class="pt-2 border-t border-white/10 text-silver/50">
