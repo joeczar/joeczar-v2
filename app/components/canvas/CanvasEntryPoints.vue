@@ -15,9 +15,10 @@ function handleHover(key: string | null) {
 
 <template>
   <div class="flex items-center justify-center gap-16 md:gap-20">
-    <div
+    <NuxtLink
       v-for="link in activeNavLinks"
       :key="link.key"
+      :to="link.href"
       class="flex flex-col items-center gap-4 cursor-pointer group"
       @mouseenter="handleHover(link.key)"
       @mouseleave="handleHover(null)"
@@ -68,6 +69,6 @@ function handleHover(key: string | null) {
       >
         {{ link.label }}
       </span>
-    </div>
+    </NuxtLink>
   </div>
 </template>
