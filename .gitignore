@@ -23,7 +23,5 @@ logs
 .env.*
 !.env.example
 
-pnpm-lock.yaml
-
 # Playwright MCP screenshots
 .playwright-mcp/

@@ -2,10 +2,28 @@ export function useMouse3D() {
   const mouse = reactive({ x: 0, y: 0 })
   const smoothMouse = reactive({ x: 0, y: 0 })
 
+  // Normalize coordinates to -1 to 1
+  function updatePosition(clientX: number, clientY: number) {
+    mouse.x = (clientX / window.innerWidth) * 2 - 1
+    mouse.y = -(clientY / window.innerHeight) * 2 + 1
+  }
+
   function handleMouseMove(event: MouseEvent) {
-    // Normalize to -1 to 1
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+    updatePosition(event.clientX, event.clientY)
+  }
+
+  function handleTouchMove(event: TouchEvent) {
+    if (event.touches.length > 0) {
+      const touch = event.touches[0]
+      updatePosition(touch.clientX, touch.clientY)
+    }
+  }
+
+  function handleTouchStart(event: TouchEvent) {
+    if (event.touches.length > 0) {
+      const touch = event.touches[0]
+      updatePosition(touch.clientX, touch.clientY)
+    }
   }
 
   // Smooth interpolation
@@ -18,11 +36,15 @@ export function useMouse3D() {
 
   onMounted(() => {
     window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
+    window.addEventListener('touchstart', handleTouchStart, { passive: true })
     animate()
   })
 
   onUnmounted(() => {
     window.removeEventListener('mousemove', handleMouseMove)
+    window.removeEventListener('touchmove', handleTouchMove)
+    window.removeEventListener('touchstart', handleTouchStart)
     cancelAnimationFrame(animationId)
   })
 
