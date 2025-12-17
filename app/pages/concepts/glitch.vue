@@ -3,51 +3,87 @@ const hasEntered = ref(false)
 const isGlitching = ref(false)
 const isMajorGlitch = ref(false)
 
-// Text fitting - scale text to fill screen width
+// Text fitting - adjust font-size to fill screen width (Safari-compatible)
 const line1Ref = ref<HTMLElement>()
 const line2Ref = ref<HTMLElement>()
 const line3Ref = ref<HTMLElement>()
 const containerRef = ref<HTMLElement>()
 
-const line1Scale = ref(1)
-const line2Scale = ref(1)
-const line3Scale = ref(1)
+// Base font size in vw units - we'll calculate pixel values from this
+const baseFontVW = 15
+const line1FontSize = ref('15vw')
+const line2FontSize = ref('15vw')
+const line3FontSize = ref('15vw')
 
 function fitText() {
   if (!containerRef.value) return
 
-  const containerWidth = containerRef.value.offsetWidth - 32 // padding
+  const containerWidth = containerRef.value.offsetWidth
+  const viewportWidth = window.innerWidth
+  const baseFontPx = (baseFontVW / 100) * viewportWidth
 
-  if (line1Ref.value) {
-    const textWidth = line1Ref.value.scrollWidth
-    line1Scale.value = containerWidth / textWidth
-  }
-  if (line2Ref.value) {
-    const textWidth = line2Ref.value.scrollWidth
-    line2Scale.value = containerWidth / textWidth
-  }
-  if (line3Ref.value) {
-    const textWidth = line3Ref.value.scrollWidth
-    line3Scale.value = containerWidth / textWidth
-  }
+  // Reset to base size first to measure natural width
+  line1FontSize.value = `${baseFontPx}px`
+  line2FontSize.value = `${baseFontPx}px`
+  line3FontSize.value = `${baseFontPx}px`
+
+  // Use requestAnimationFrame to ensure measurements are after reset
+  requestAnimationFrame(() => {
+    // Measure each line's natural width and calculate new font size
+    if (line1Ref.value) {
+      const textEl = line1Ref.value.querySelector('span') as HTMLElement
+      if (textEl) {
+        const textWidth = textEl.offsetWidth
+        if (textWidth > 0) {
+          const scale = containerWidth / textWidth
+          line1FontSize.value = `${baseFontPx * scale}px`
+        }
+      }
+    }
+    if (line2Ref.value) {
+      const textEl = line2Ref.value.querySelector('span') as HTMLElement
+      if (textEl) {
+        const textWidth = textEl.offsetWidth
+        if (textWidth > 0) {
+          const scale = containerWidth / textWidth
+          line2FontSize.value = `${baseFontPx * scale}px`
+        }
+      }
+    }
+    if (line3Ref.value) {
+      const textEl = line3Ref.value.querySelector('span') as HTMLElement
+      if (textEl) {
+        const textWidth = textEl.offsetWidth
+        if (textWidth > 0) {
+          const scale = containerWidth / textWidth
+          line3FontSize.value = `${baseFontPx * scale}px`
+        }
+      }
+    }
+  })
 }
 
 // Entrance animation
 onMounted(() => {
-  // Fit text after fonts load
-  nextTick(() => {
+  // Wait for fonts to load
+  document.fonts.ready.then(() => {
     fitText()
-    // Refit after a moment for font loading
-    setTimeout(fitText, 100)
+    // Start entrance after text is fitted
+    setTimeout(() => {
+      hasEntered.value = true
+    }, 100)
   })
+
+  // Fallback if fonts.ready doesn't work
+  setTimeout(() => {
+    fitText()
+    if (!hasEntered.value) {
+      hasEntered.value = true
+    }
+  }, 500)
 
   // Refit on resize
   window.addEventListener('resize', fitText)
-
-  // Start entrance after text is fitted
-  setTimeout(() => {
-    hasEntered.value = true
-  }, 200)
 
   // Random glitch triggers - more frequent
   setInterval(() => {
@@ -105,7 +141,7 @@ function triggerMajorGlitch() {
     <!-- Main content -->
     <div
       ref="containerRef"
-      class="min-h-screen flex flex-col justify-center px-4 overflow-hidden"
+      class="min-h-screen flex flex-col justify-center px-2 overflow-hidden"
     >
       <!-- The name - MASSIVE, FLOODING THE SCREEN -->
       <div
@@ -117,71 +153,71 @@ function triggerMajorGlitch() {
         }"
         @click="triggerMajorGlitch"
       >
-        <!-- Main text - each line scales to fill width -->
-        <h1 class="font-black leading-[0.75] tracking-tighter uppercase">
-          <span
-            ref="line1Ref"
-            class="block name-line line-1 origin-left whitespace-nowrap"
-            :style="{ transform: `scaleX(${line1Scale})` }"
-            data-text="JOE"
-          >JOE</span>
-          <span
-            ref="line2Ref"
-            class="block name-line line-2 origin-left whitespace-nowrap"
-            :style="{ transform: `scaleX(${line2Scale})` }"
-            data-text="CZAR"
-          >CZAR</span>
-          <span
-            ref="line3Ref"
-            class="block name-line line-3 origin-left whitespace-nowrap"
-            :style="{ transform: `scaleX(${line3Scale})` }"
-            data-text="NECKI"
-          >NECKI</span>
+        <!-- Main text - font-size based scaling (Safari-compatible) -->
+        <h1 class="font-black leading-[0.85] tracking-tighter uppercase">
+          <span ref="line1Ref" class="block">
+            <span
+              class="inline-block name-line line-1 whitespace-nowrap"
+              :style="{ fontSize: line1FontSize }"
+            >JOE</span>
+          </span>
+          <span ref="line2Ref" class="block">
+            <span
+              class="inline-block name-line line-2 whitespace-nowrap"
+              :style="{ fontSize: line2FontSize }"
+            >CZAR</span>
+          </span>
+          <span ref="line3Ref" class="block">
+            <span
+              class="inline-block name-line line-3 whitespace-nowrap"
+              :style="{ fontSize: line3FontSize }"
+            >NECKI</span>
+          </span>
         </h1>
 
         <!-- Chromatic aberration layers -->
-        <div class="absolute inset-0 chroma-r" aria-hidden="true">
-          <span class="block font-black leading-[0.75] tracking-tighter uppercase">
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line1Scale})` }">JOE</span>
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line2Scale})` }">CZAR</span>
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line3Scale})` }">NECKI</span>
+        <div class="absolute inset-0 chroma-r pointer-events-none" aria-hidden="true">
+          <span class="block font-black leading-[0.85] tracking-tighter uppercase">
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line1FontSize }">JOE</span></span>
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line2FontSize }">CZAR</span></span>
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line3FontSize }">NECKI</span></span>
           </span>
         </div>
-        <div class="absolute inset-0 chroma-g" aria-hidden="true">
-          <span class="block font-black leading-[0.75] tracking-tighter uppercase">
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line1Scale})` }">JOE</span>
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line2Scale})` }">CZAR</span>
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line3Scale})` }">NECKI</span>
+        <div class="absolute inset-0 chroma-g pointer-events-none" aria-hidden="true">
+          <span class="block font-black leading-[0.85] tracking-tighter uppercase">
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line1FontSize }">JOE</span></span>
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line2FontSize }">CZAR</span></span>
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line3FontSize }">NECKI</span></span>
           </span>
         </div>
-        <div class="absolute inset-0 chroma-b" aria-hidden="true">
-          <span class="block font-black leading-[0.75] tracking-tighter uppercase">
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line1Scale})` }">JOE</span>
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line2Scale})` }">CZAR</span>
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line3Scale})` }">NECKI</span>
+        <div class="absolute inset-0 chroma-b pointer-events-none" aria-hidden="true">
+          <span class="block font-black leading-[0.85] tracking-tighter uppercase">
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line1FontSize }">JOE</span></span>
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line2FontSize }">CZAR</span></span>
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line3FontSize }">NECKI</span></span>
           </span>
         </div>
 
         <!-- Slice/tear layers -->
-        <div class="absolute inset-0 slice-layer slice-1" aria-hidden="true">
-          <span class="block font-black leading-[0.75] tracking-tighter uppercase">
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line1Scale})` }">JOE</span>
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line2Scale})` }">CZAR</span>
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line3Scale})` }">NECKI</span>
+        <div class="absolute inset-0 slice-layer slice-1 pointer-events-none" aria-hidden="true">
+          <span class="block font-black leading-[0.85] tracking-tighter uppercase">
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line1FontSize }">JOE</span></span>
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line2FontSize }">CZAR</span></span>
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line3FontSize }">NECKI</span></span>
           </span>
         </div>
-        <div class="absolute inset-0 slice-layer slice-2" aria-hidden="true">
-          <span class="block font-black leading-[0.75] tracking-tighter uppercase">
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line1Scale})` }">JOE</span>
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line2Scale})` }">CZAR</span>
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line3Scale})` }">NECKI</span>
+        <div class="absolute inset-0 slice-layer slice-2 pointer-events-none" aria-hidden="true">
+          <span class="block font-black leading-[0.85] tracking-tighter uppercase">
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line1FontSize }">JOE</span></span>
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line2FontSize }">CZAR</span></span>
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line3FontSize }">NECKI</span></span>
           </span>
         </div>
-        <div class="absolute inset-0 slice-layer slice-3" aria-hidden="true">
-          <span class="block font-black leading-[0.75] tracking-tighter uppercase">
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line1Scale})` }">JOE</span>
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line2Scale})` }">CZAR</span>
-            <span class="block origin-left whitespace-nowrap" :style="{ transform: `scaleX(${line3Scale})` }">NECKI</span>
+        <div class="absolute inset-0 slice-layer slice-3 pointer-events-none" aria-hidden="true">
+          <span class="block font-black leading-[0.85] tracking-tighter uppercase">
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line1FontSize }">JOE</span></span>
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line2FontSize }">CZAR</span></span>
+            <span class="block"><span class="inline-block whitespace-nowrap" :style="{ fontSize: line3FontSize }">NECKI</span></span>
           </span>
         </div>
       </div>
@@ -212,11 +248,6 @@ function triggerMajorGlitch() {
 </template>
 
 <style scoped>
-/* Base font size for text fitting - will be scaled */
-h1 {
-  font-size: 25vw;
-}
-
 /* Noise overlay */
 .noise-overlay {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
@@ -281,43 +312,41 @@ h1 {
   position: relative;
 }
 
-/* Entrance animation */
+/* Entrance animation - slides in from left */
 .name-line {
   opacity: 0;
   transform-origin: left center;
+  transform: translateX(-110%);
 }
 
 .entered .name-line {
-  animation: glitch-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: glitch-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .entered .line-1 { animation-delay: 0s; }
-.entered .line-2 { animation-delay: 0.08s; }
-.entered .line-3 { animation-delay: 0.16s; }
+.entered .line-2 { animation-delay: 0.06s; }
+.entered .line-3 { animation-delay: 0.12s; }
 
 @keyframes glitch-enter {
   0% {
     opacity: 0;
-    transform: translateX(-120%) skewX(-30deg) scaleX(var(--scale, 1));
-    filter: blur(20px);
+    transform: translateX(-110%);
+    filter: blur(15px);
   }
-  15% {
+  30% {
     opacity: 1;
-    transform: translateX(5%) skewX(15deg) scaleX(var(--scale, 1));
+    transform: translateX(3%);
     filter: blur(0);
   }
-  25% {
-    transform: translateX(-3%) skewX(-8deg) scaleX(var(--scale, 1));
-  }
-  35% {
-    transform: translateX(2%) skewX(4deg) scaleX(var(--scale, 1));
-  }
   45% {
-    transform: translateX(-1%) skewX(-2deg) scaleX(var(--scale, 1));
+    transform: translateX(-2%);
+  }
+  60% {
+    transform: translateX(1%);
   }
   100% {
     opacity: 1;
-    transform: translateX(0) skewX(0) scaleX(var(--scale, 1));
+    transform: translateX(0);
     filter: blur(0);
   }
 }
@@ -326,8 +355,6 @@ h1 {
 .chroma-r, .chroma-g, .chroma-b {
   opacity: 0;
   mix-blend-mode: screen;
-  pointer-events: none;
-  font-size: 25vw;
 }
 
 .chroma-r { color: #ff0000; }
@@ -338,8 +365,6 @@ h1 {
 .slice-layer {
   opacity: 0;
   color: white;
-  pointer-events: none;
-  font-size: 25vw;
 }
 
 .slice-1 {
@@ -377,43 +402,43 @@ h1 {
 
 @keyframes text-jitter {
   0% { transform: translate(0, 0); }
-  25% { transform: translate(-2px, 1px); }
-  50% { transform: translate(1px, -1px); }
-  75% { transform: translate(-1px, -1px); }
-  100% { transform: translate(2px, 1px); }
+  25% { transform: translate(-3px, 2px); }
+  50% { transform: translate(2px, -1px); }
+  75% { transform: translate(-2px, -2px); }
+  100% { transform: translate(3px, 1px); }
 }
 
 @keyframes chroma-r-glitch {
   0% { opacity: 0; transform: translate(0); }
-  20% { opacity: 0.9; transform: translate(-12px, 4px); }
-  40% { opacity: 0; transform: translate(8px, -3px); }
-  60% { opacity: 0.7; transform: translate(-5px, 2px); }
-  80% { opacity: 0; transform: translate(10px, -4px); }
+  20% { opacity: 0.9; transform: translate(-15px, 5px); }
+  40% { opacity: 0; transform: translate(10px, -4px); }
+  60% { opacity: 0.7; transform: translate(-8px, 3px); }
+  80% { opacity: 0; transform: translate(12px, -5px); }
   100% { opacity: 0; transform: translate(0); }
 }
 
 @keyframes chroma-g-glitch {
   0% { opacity: 0; transform: translate(0); }
-  25% { opacity: 0.6; transform: translate(6px, -3px); }
-  50% { opacity: 0; transform: translate(-8px, 4px); }
-  75% { opacity: 0.5; transform: translate(4px, -2px); }
+  25% { opacity: 0.6; transform: translate(8px, -4px); }
+  50% { opacity: 0; transform: translate(-10px, 5px); }
+  75% { opacity: 0.5; transform: translate(6px, -3px); }
   100% { opacity: 0; transform: translate(0); }
 }
 
 @keyframes chroma-b-glitch {
   0% { opacity: 0; transform: translate(0); }
-  20% { opacity: 0.8; transform: translate(10px, -3px); }
-  40% { opacity: 0; transform: translate(-6px, 2px); }
-  60% { opacity: 0.6; transform: translate(5px, -3px); }
-  80% { opacity: 0; transform: translate(-8px, 3px); }
+  20% { opacity: 0.8; transform: translate(12px, -4px); }
+  40% { opacity: 0; transform: translate(-8px, 3px); }
+  60% { opacity: 0.6; transform: translate(7px, -4px); }
+  80% { opacity: 0; transform: translate(-10px, 4px); }
   100% { opacity: 0; transform: translate(0); }
 }
 
 @keyframes slice-glitch {
   0% { opacity: 0; transform: translateX(0); }
-  25% { opacity: 1; transform: translateX(30px); }
-  50% { opacity: 1; transform: translateX(-25px); }
-  75% { opacity: 1; transform: translateX(15px); }
+  25% { opacity: 1; transform: translateX(40px); }
+  50% { opacity: 1; transform: translateX(-35px); }
+  75% { opacity: 1; transform: translateX(20px); }
   100% { opacity: 0; transform: translateX(0); }
 }
 
@@ -454,56 +479,56 @@ h1 {
 
 @keyframes major-shake {
   0% { transform: translate(0) skewX(0) skewY(0); }
-  20% { transform: translate(-8px, 5px) skewX(-4deg) skewY(1deg); }
-  40% { transform: translate(10px, -4px) skewX(3deg) skewY(-1deg); }
-  60% { transform: translate(-6px, -6px) skewX(-2deg) skewY(2deg); }
-  80% { transform: translate(8px, 4px) skewX(4deg) skewY(-2deg); }
-  100% { transform: translate(-4px, 3px) skewX(-3deg) skewY(1deg); }
+  20% { transform: translate(-10px, 6px) skewX(-5deg) skewY(2deg); }
+  40% { transform: translate(12px, -5px) skewX(4deg) skewY(-2deg); }
+  60% { transform: translate(-8px, -8px) skewX(-3deg) skewY(3deg); }
+  80% { transform: translate(10px, 5px) skewX(5deg) skewY(-3deg); }
+  100% { transform: translate(-6px, 4px) skewX(-4deg) skewY(2deg); }
 }
 
 @keyframes chroma-r-major {
-  0% { transform: translate(-25px, 8px); }
-  25% { transform: translate(30px, -12px); }
-  50% { transform: translate(-18px, 6px); }
-  75% { transform: translate(22px, -10px); }
-  100% { transform: translate(-20px, 8px); }
+  0% { transform: translate(-30px, 10px); }
+  25% { transform: translate(35px, -15px); }
+  50% { transform: translate(-22px, 8px); }
+  75% { transform: translate(28px, -12px); }
+  100% { transform: translate(-25px, 10px); }
 }
 
 @keyframes chroma-g-major {
-  0% { transform: translate(15px, -5px); }
-  25% { transform: translate(-22px, 10px); }
-  50% { transform: translate(12px, -8px); }
-  75% { transform: translate(-18px, 7px); }
-  100% { transform: translate(16px, -6px); }
+  0% { transform: translate(18px, -6px); }
+  25% { transform: translate(-28px, 12px); }
+  50% { transform: translate(15px, -10px); }
+  75% { transform: translate(-22px, 9px); }
+  100% { transform: translate(20px, -8px); }
 }
 
 @keyframes chroma-b-major {
-  0% { transform: translate(20px, 6px); }
-  25% { transform: translate(-28px, -10px); }
-  50% { transform: translate(22px, 5px); }
-  75% { transform: translate(-15px, -8px); }
-  100% { transform: translate(18px, 7px); }
+  0% { transform: translate(25px, 8px); }
+  25% { transform: translate(-35px, -12px); }
+  50% { transform: translate(28px, 6px); }
+  75% { transform: translate(-20px, -10px); }
+  100% { transform: translate(22px, 9px); }
 }
 
 @keyframes slice-major-1 {
-  0% { transform: translateX(50px); }
-  33% { transform: translateX(-60px); }
-  66% { transform: translateX(40px); }
-  100% { transform: translateX(-45px); }
+  0% { transform: translateX(60px); }
+  33% { transform: translateX(-70px); }
+  66% { transform: translateX(50px); }
+  100% { transform: translateX(-55px); }
 }
 
 @keyframes slice-major-2 {
-  0% { transform: translateX(-55px); }
-  33% { transform: translateX(65px); }
-  66% { transform: translateX(-50px); }
-  100% { transform: translateX(55px); }
+  0% { transform: translateX(-65px); }
+  33% { transform: translateX(75px); }
+  66% { transform: translateX(-60px); }
+  100% { transform: translateX(65px); }
 }
 
 @keyframes slice-major-3 {
-  0% { transform: translateX(45px); }
-  33% { transform: translateX(-55px); }
-  66% { transform: translateX(60px); }
-  100% { transform: translateX(-40px); }
+  0% { transform: translateX(55px); }
+  33% { transform: translateX(-65px); }
+  66% { transform: translateX(70px); }
+  100% { transform: translateX(-50px); }
 }
 
 /* Flicker effect on major glitch */
