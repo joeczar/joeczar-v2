@@ -14,7 +14,7 @@ const { activeNavLinks } = useSiteLinks()
 
 <template>
   <div class="terminal-window">
-    <div class="p-3 font-mono text-xs space-y-0.5">
+    <div v-if="activeNavLinks.length" class="p-3 font-mono text-xs space-y-0.5">
       <!-- User prompt -->
       <div class="text-silver/40 text-[10px] mb-2">
         <span class="text-pulse/50">{{ user }}</span><span class="text-silver/30">@</span><span class="text-signal/50">{{ host }}</span><span class="text-silver/30">:~$</span>
@@ -38,7 +38,7 @@ const { activeNavLinks } = useSiteLinks()
       </div>
     </div>
 
-    <!-- Social links -->
+    <!-- Social links (fallback when no nav links) -->
     <div class="px-3 pb-3 pt-1 border-t border-white/5">
       <SocialLinks size="sm" class="font-mono text-silver/30 hover:text-silver/60" />
     </div>

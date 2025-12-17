@@ -13,10 +13,16 @@ const concepts = [
     name: 'Glitch',
     description: 'Brutalist type + aggressive distortion',
     vibe: 'chaos'
+  },
+  {
+    key: 'plasma' as const,
+    name: 'Plasma',
+    description: 'LED matrix with animated plasma waves',
+    vibe: 'warm'
   }
 ]
 
-function selectAndGo(key: 'canvas' | 'glitch') {
+function selectAndGo(key: 'canvas' | 'glitch' | 'plasma') {
   setConcept(key)
   navigateTo(`/concepts/${key}`)
 }
