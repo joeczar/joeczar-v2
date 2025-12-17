@@ -262,12 +262,15 @@ const { activeNavLinks, socialLinks } = useSiteLinks()
       </div>
 
       <!-- Navigation -->
-      <div v-if="activeNavLinks.length" class="mt-16 flex gap-12 pointer-events-auto">
+      <div
+        v-if="activeNavLinks.length"
+        class="mt-16 flex gap-8 pointer-events-auto px-5 py-2.5 rounded-full bg-black/30 backdrop-blur-sm border border-white/5"
+      >
         <a
           v-for="link in activeNavLinks"
           :key="link.key"
           :href="link.href"
-          class="text-silver/70 hover:text-amber-400 transition-colors font-mono text-sm"
+          class="text-silver/80 hover:text-amber-400 transition-colors font-mono text-sm"
         >
           {{ link.label }}
         </a>
@@ -275,14 +278,14 @@ const { activeNavLinks, socialLinks } = useSiteLinks()
 
       <!-- Social links -->
       <div class="absolute bottom-8 pointer-events-auto">
-        <nav class="flex items-center gap-6">
+        <nav class="flex items-center gap-6 px-4 py-2 rounded-full bg-black/30 backdrop-blur-sm border border-white/5">
           <a
             v-for="link in socialLinks"
             :key="link.key"
             :href="link.href"
             :target="link.external ? '_blank' : undefined"
             :rel="link.external ? 'noopener noreferrer' : undefined"
-            class="text-silver/50 hover:text-amber-400 transition-colors text-sm"
+            class="text-silver/70 hover:text-amber-400 transition-colors text-sm"
           >
             {{ link.label }}
           </a>
