@@ -1,6 +1,6 @@
 type Concept = 'canvas' | 'glitch'
 
-const COOKIE_NAME = 'joeczar-concept'
+const STORAGE_KEY = 'joeczar-concept'
 const CONCEPTS: Concept[] = ['canvas', 'glitch']
 
 export function useConceptPicker() {
@@ -13,20 +13,17 @@ export function useConceptPicker() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches
   }
 
-  // Get cookie value
-  function getCookie(): Concept | null {
+  // Get saved preference from localStorage
+  function getSaved(): Concept | null {
     if (import.meta.server) return null
-    const match = document.cookie.match(new RegExp(`${COOKIE_NAME}=([^;]+)`))
-    const value = match?.[1] as Concept | undefined
+    const value = localStorage.getItem(STORAGE_KEY) as Concept | null
     return value && CONCEPTS.includes(value) ? value : null
   }
 
-  // Set cookie (1 year expiry)
-  function setCookie(concept: Concept) {
+  // Save preference to localStorage
+  function savePreference(concept: Concept) {
     if (import.meta.server) return
-    const expires = new Date()
-    expires.setFullYear(expires.getFullYear() + 1)
-    document.cookie = `${COOKIE_NAME}=${concept};expires=${expires.toUTCString()};path=/;SameSite=Lax`
+    localStorage.setItem(STORAGE_KEY, concept)
   }
 
   // Pick random concept
@@ -45,7 +42,7 @@ export function useConceptPicker() {
     }
 
     // Check for existing preference
-    const saved = getCookie()
+    const saved = getSaved()
     if (saved) {
       currentConcept.value = saved
       return saved
@@ -53,7 +50,7 @@ export function useConceptPicker() {
 
     // First visit - random pick and persist
     const picked = pickRandom()
-    setCookie(picked)
+    savePreference(picked)
     currentConcept.value = picked
     return picked
   }
@@ -61,14 +58,14 @@ export function useConceptPicker() {
   // Switch to other concept (for Konami code)
   function toggle() {
     const next: Concept = currentConcept.value === 'canvas' ? 'glitch' : 'canvas'
-    setCookie(next)
+    savePreference(next)
     currentConcept.value = next
     return next
   }
 
   // Force a specific concept
   function setConcept(concept: Concept) {
-    setCookie(concept)
+    savePreference(concept)
     currentConcept.value = concept
   }
 
