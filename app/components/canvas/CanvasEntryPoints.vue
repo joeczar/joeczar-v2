@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import * as THREE from 'three'
-import { useLoop } from '@tresjs/core'
-
 const emit = defineEmits<{
   hover: [key: string | null]
 }>()
 
-const points = [
-  { key: 'music', label: 'music', color: '#ef4136' },
-  { key: 'work', label: 'work', color: '#50d2cb' },
-  { key: 'code', label: 'code', color: '#7ec245' }
-]
+const { activeNavLinks } = useSiteLinks()
 
 const activePoint = ref<string | null>(null)
 
@@ -23,18 +16,18 @@ function handleHover(key: string | null) {
 <template>
   <div class="flex items-center justify-center gap-16 md:gap-20">
     <div
-      v-for="point in points"
-      :key="point.key"
+      v-for="link in activeNavLinks"
+      :key="link.key"
       class="flex flex-col items-center gap-4 cursor-pointer group"
-      @mouseenter="handleHover(point.key)"
+      @mouseenter="handleHover(link.key)"
       @mouseleave="handleHover(null)"
     >
       <!-- Mini 3D scene -->
       <div
         class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden transition-all duration-500"
-        :class="activePoint === point.key ? 'scale-125' : ''"
+        :class="activePoint === link.key ? 'scale-125' : ''"
         :style="{
-          boxShadow: activePoint === point.key ? `0 0 40px ${point.color}60` : 'none'
+          boxShadow: activePoint === link.key ? `0 0 40px ${link.color}60` : 'none'
         }"
       >
         <ClientOnly>
@@ -43,26 +36,26 @@ function handleHover(key: string | null) {
 
             <!-- Music: Torus Knot -->
             <CanvasEntryMesh
-              v-if="point.key === 'music'"
+              v-if="link.key === 'music'"
               type="torus"
-              :color="point.color"
-              :is-active="activePoint === point.key"
+              :color="link.color"
+              :is-active="activePoint === link.key"
             />
 
             <!-- Work: Icosahedron -->
             <CanvasEntryMesh
-              v-if="point.key === 'work'"
+              v-if="link.key === 'work'"
               type="icosa"
-              :color="point.color"
-              :is-active="activePoint === point.key"
+              :color="link.color"
+              :is-active="activePoint === link.key"
             />
 
             <!-- Code: Cube -->
             <CanvasEntryMesh
-              v-if="point.key === 'code'"
+              v-if="link.key === 'code'"
               type="cube"
-              :color="point.color"
-              :is-active="activePoint === point.key"
+              :color="link.color"
+              :is-active="activePoint === link.key"
             />
           </TresCanvas>
         </ClientOnly>
@@ -71,9 +64,9 @@ function handleHover(key: string | null) {
       <!-- Label -->
       <span
         class="text-sm font-mono transition-colors duration-300"
-        :style="{ color: activePoint === point.key ? point.color : '#a0a0a3' }"
+        :style="{ color: activePoint === link.key ? link.color : '#a0a0a3' }"
       >
-        {{ point.label }}
+        {{ link.label }}
       </span>
     </div>
   </div>

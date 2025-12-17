@@ -9,17 +9,7 @@ const props = withDefaults(defineProps<Props>(), {
   host: 'void'
 })
 
-interface NavLink {
-  key: string
-  href: string
-  color: string
-}
-
-const links: NavLink[] = [
-  { key: 'music', href: '#', color: 'text-ember' },
-  { key: 'work', href: '#', color: 'text-signal' },
-  { key: 'code', href: '#', color: 'text-pulse' }
-]
+const { activeNavLinks } = useSiteLinks()
 </script>
 
 <template>
@@ -32,13 +22,13 @@ const links: NavLink[] = [
 
       <!-- Navigation links -->
       <a
-        v-for="link in links"
+        v-for="link in activeNavLinks"
         :key="link.key"
         :href="link.href"
         class="block text-silver/50 hover:text-bone transition-colors duration-200 group"
       >
         <span class="text-silver/30 group-hover:text-silver/50">cd</span>
-        <span :class="link.color" class="opacity-70 group-hover:opacity-100 ml-1">./{{ link.key }}</span>
+        <span :class="link.tailwindColor" class="opacity-70 group-hover:opacity-100 ml-1">./{{ link.key }}</span>
       </a>
 
       <!-- Blinking cursor line -->
