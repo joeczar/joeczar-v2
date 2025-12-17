@@ -1,27 +1,62 @@
 <script setup lang="ts">
-const concepts = [
-  { path: '/concepts/canvas', name: 'Canvas', description: 'Floating 3D objects + parallax' },
-  { path: '/concepts/glitch', name: 'Glitch', description: 'Brutalist type + aggressive distortion' }
-]
+const { currentConcept, init, toggle } = useConceptPicker()
+const isTransitioning = ref(false)
+
+// Initialize concept on mount
+onMounted(() => {
+  init()
+})
+
+// Konami code triggers transition and swap
+useKonamiCode(() => {
+  // Start transition effect
+  isTransitioning.value = true
+
+  // Swap after brief glitch
+  setTimeout(() => {
+    toggle()
+  }, 150)
+
+  // End transition
+  setTimeout(() => {
+    isTransitioning.value = false
+  }, 400)
+})
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col items-center justify-center p-8">
-    <h1 class="text-4xl md:text-5xl font-light mb-4">joeczar-v2</h1>
-    <p class="text-silver mb-12">Landing page concepts</p>
+  <div class="relative">
+    <!-- Transition overlay -->
+    <div
+      v-if="isTransitioning"
+      class="fixed inset-0 z-50 pointer-events-none transition-glitch"
+    />
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl w-full">
-      <NuxtLink
-        v-for="concept in concepts"
-        :key="concept.path"
-        :to="concept.path"
-        class="group p-6 border border-ash rounded-lg hover:border-silver transition-colors duration-300"
-      >
-        <h2 class="text-xl font-medium mb-2 group-hover:text-signal transition-colors">
-          {{ concept.name }}
-        </h2>
-        <p class="text-silver text-sm">{{ concept.description }}</p>
-      </NuxtLink>
-    </div>
+    <!-- Canvas Concept -->
+    <ConceptsCanvasConcept v-if="currentConcept === 'canvas'" />
+
+    <!-- Glitch Concept -->
+    <ConceptsGlitchConcept v-else-if="currentConcept === 'glitch'" />
   </div>
 </template>
+
+<style scoped>
+.transition-glitch {
+  background: white;
+  animation: glitch-flash 0.4s steps(4) forwards;
+}
+
+@keyframes glitch-flash {
+  0% { opacity: 0; }
+  10% { opacity: 1; background: white; }
+  20% { opacity: 0; }
+  30% { opacity: 1; background: #ef4136; }
+  40% { opacity: 0; }
+  50% { opacity: 1; background: #50d2cb; mix-blend-mode: difference; }
+  60% { opacity: 0; }
+  70% { opacity: 1; background: black; }
+  80% { opacity: 0.5; background: white; mix-blend-mode: overlay; }
+  90% { opacity: 0.2; }
+  100% { opacity: 0; }
+}
+</style>

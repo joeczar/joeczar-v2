@@ -1,51 +1,13 @@
 <script setup lang="ts">
-const lines = ['JOE', 'CZAR', 'NECKI']
+// Direct route to glitch - also supports Konami code
+const { toggle } = useConceptPicker()
 
-// Composables
-const glitch = useGlitch()
-const { containerRef, lineRefs, fontSizes } = useFitText(lines)
-
-// Start glitch effects after entrance
-onMounted(() => {
-  // Wait for text to fit, then enter and start glitching
-  setTimeout(() => {
-    glitch.enter()
-    glitch.start()
-  }, 100)
-})
-
-onUnmounted(() => {
-  glitch.stop()
+useKonamiCode(() => {
+  toggle()
+  navigateTo('/')
 })
 </script>
 
 <template>
-  <div class="fixed inset-0 bg-void overflow-hidden">
-    <!-- CRT Effects -->
-    <GlitchCrtOverlay :is-major-glitch="glitch.isMajorGlitch.value" />
-
-    <!-- Main content -->
-    <div
-      ref="containerRef"
-      class="min-h-screen flex flex-col justify-center px-2 overflow-hidden"
-    >
-      <!-- Glitch Text -->
-      <GlitchText
-        :lines="lines"
-        :font-sizes="fontSizes.map(fs => fs.value)"
-        :line-refs="lineRefs"
-        :has-entered="glitch.hasEntered.value"
-        :is-glitching="glitch.isGlitching.value"
-        :is-major-glitch="glitch.isMajorGlitch.value"
-        :is-viewport-shift="glitch.isViewportShift.value"
-        :viewport-offset="glitch.viewportOffset.value"
-        @click="glitch.triggerMajorGlitch"
-      />
-
-      <!-- Terminal -->
-      <div class="absolute bottom-6 left-4 md:left-8 z-10">
-        <TerminalWindow user="joe" host="void" />
-      </div>
-    </div>
-  </div>
+  <ConceptsGlitchConcept />
 </template>
