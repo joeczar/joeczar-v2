@@ -47,200 +47,140 @@ This plan outlines atomic commits for building the foundation stack. Each commit
 
 ---
 
-## Phase 2: Shared Components & Utilities
+## Phase 2: Shared Components & Utilities ✅ COMPLETE
 
-### Commit 6: Add useMouse3D composable
-Create `composables/useMouse3D.ts`:
+### Commit 6: Add useMouse3D composable ✅
+- `fa11e07` - feat: add useMouse3D composable for 3D mouse tracking
 - Track mouse position normalized to -1 to 1
 - Smooth interpolation with requestAnimationFrame
 - Cleanup on unmount
 
-```bash
-git add .
-git commit -m "feat: add useMouse3D composable for 3D mouse tracking"
-```
-
-**Verification:** Can import and use in a test component
+**Verification:** ✅ Can import and use in components
 
 ---
 
-### Commit 7: Add SocialLinks component
-Create `components/SocialLinks.vue`:
+### Commit 7: Add SocialLinks component ✅
+- `e998dce` - feat: add SocialLinks component
 - GitHub, LinkedIn, CV links
 - Size prop (sm/md)
 - Hover effects
 
-```bash
-git add .
-git commit -m "feat: add SocialLinks component"
-```
-
-**Verification:** Component renders with working links
+**Verification:** ✅ Component renders with working links
 
 ---
 
-### Commit 8: Add EntryPoints component
-Create `components/EntryPoints.vue`:
+### Commit 8: Add EntryPoints component ✅
+- `b47b05a` - feat: add EntryPoints component with hover states
 - Music, Work, Code entry points
 - Hover state with color changes (using inline styles for dynamic colors)
 - Emits hover event
 
-```bash
-git add .
-git commit -m "feat: add EntryPoints component with hover states"
-```
-
-**Verification:** Hover effects work, colors change correctly
+**Verification:** ✅ Hover effects work, colors change correctly
 
 ---
 
-## Phase 3: Index Page (Concept Selector)
+## Phase 3: Index Page (Concept Selector) ✅ COMPLETE
 
-### Commit 9: Create index page with concept navigation
-Create `pages/index.vue`:
+### Commit 9: Create index page with concept navigation ✅
+- `b796571` - feat: add index page with concept navigation
 - Grid of concept cards
 - Links to /concepts/canvas, /concepts/glitch, etc.
 - Minimal styling
 
-```bash
-git add .
-git commit -m "feat: add index page with concept navigation"
-```
-
-**Verification:** Index page loads, cards link to concept routes
+**Verification:** ✅ Index page loads, cards link to concept routes
 
 ---
 
-## Phase 4: Canvas Concept
+## Phase 4: Canvas Concept ✅ COMPLETE
 
-### Commit 10: Create canvas concept page shell
-Create `pages/concepts/canvas.vue`:
+### Commit 10: Create canvas concept page shell ✅
+- `b857e43` - feat: add canvas concept page shell with parallax
 - Full viewport layout
 - TresCanvas with basic camera
 - HTML overlay structure (name, subtitle, entry points, social)
 - Parallax effect on name using useMouse3D
 
-```bash
-git add .
-git commit -m "feat: add canvas concept page shell with parallax"
-```
-
-**Verification:** Page loads with text overlay and parallax effect
+**Verification:** ✅ Page loads with text overlay and parallax effect
 
 ---
 
-### Commit 11: Add CanvasParticles component
-Create `components/canvas/CanvasParticles.vue`:
+### Commit 11: Add CanvasParticles component ✅
+- `6f42b55` - feat: add CanvasParticles component with shader animation
 - 2000 particles with custom shader
 - Mouse-reactive movement
 - Color changes based on active entry point
 - Uses useLoop().onBeforeRender() for animation
 
-```bash
-git add .
-git commit -m "feat: add CanvasParticles component with shader animation"
-```
-
-**Verification:** Particles render and respond to mouse movement
+**Verification:** ✅ Particles render and respond to mouse movement
 
 ---
 
-## Phase 5: Glitch Concept
+## Phase 5: Glitch Concept ✅ COMPLETE
 
-### Commit 12: Create glitch concept page
-Create `pages/concepts/glitch.vue`:
+### Commit 12: Create glitch concept page ✅
+- `c126c13` - feat: add glitch concept page with brutalist typography
 - Brutalist typography layout
 - Glitch animation CSS
 - Scanlines overlay
 - Entry points with glitch hover effect
 
-```bash
-git add .
-git commit -m "feat: add glitch concept page with brutalist typography"
-```
-
-**Verification:** Page loads with glitch effects on hover
+**Verification:** ✅ Page loads with glitch effects on hover
 
 ---
 
-## Phase 6: Organism Concept
+## Phase 6: Organism Concept ✅ COMPLETE
 
-### Commit 13: Create organism concept page shell
-Create `pages/concepts/organism.vue`:
+### Commit 13: Create organism concept page shell ✅
+- `943c22a` - feat: add organism concept page shell
 - Full viewport layout
 - TresCanvas
 - HTML overlay with glowing node entry points
 
-```bash
-git add .
-git commit -m "feat: add organism concept page shell"
-```
-
-**Verification:** Page loads with entry point nodes
+**Verification:** ✅ Page loads with entry point nodes
 
 ---
 
-### Commit 14: Add OrganismNetwork component
-Create `components/organism/OrganismNetwork.vue`:
+### Commit 14: Add OrganismNetwork component ✅
+- `bde1871` - feat: add OrganismNetwork component with connected nodes
 - 30 nodes in spherical distribution
 - Line2 connections between nearby nodes
 - Breathing animation
 - Color changes based on active point
 
-```bash
-git add .
-git commit -m "feat: add OrganismNetwork component with connected nodes"
-```
-
-**Verification:** Network renders with animated connections
+**Verification:** ✅ Network renders with animated connections
 
 ---
 
-## Phase 7: Portal Concept
+## Phase 7: Portal Concept ✅ COMPLETE
 
-### Commit 15: Create portal concept page shell
-Create `pages/concepts/portal.vue`:
+### Commit 15: Create portal concept page shell ✅
+- `bf541d4` - feat: add portal concept page shell
 - Minimal layout
 - Three portal windows for entry points
 
-```bash
-git add .
-git commit -m "feat: add portal concept page shell"
-```
-
-**Verification:** Page loads with portal placeholders
+**Verification:** ✅ Page loads with portal placeholders
 
 ---
 
-### Commit 16: Add PortalWindow component
-Create `components/portal/PortalWindow.vue`:
+### Commit 16: Add PortalWindow component ✅
+- `5b3dfc0` - feat: add PortalWindow component frame
 - Circular frame with glow effect
 - Nested TresCanvas for mini 3D scenes
 - Active/inactive states
 
-```bash
-git add .
-git commit -m "feat: add PortalWindow component frame"
-```
-
-**Verification:** Portal frames render with hover effects
+**Verification:** ✅ Portal frames render with hover effects
 
 ---
 
-### Commit 17: Add portal scene components
-Create:
-- `components/portal/PortalMusicScene.vue` (torus knot wireframe)
-- `components/portal/PortalWorkScene.vue` (icosahedron nodes)
-- `components/portal/PortalCodeScene.vue` (wireframe cube)
+### Commit 17: Add portal scene components ✅
+- `dd3a953` - feat: add portal mini-scene components
+- `PortalMusicScene.vue` (torus knot wireframe)
+- `PortalWorkScene.vue` (icosahedron nodes)
+- `PortalCodeScene.vue` (wireframe cube)
 
 Each uses useLoop().onBeforeRender() for rotation animation.
 
-```bash
-git add .
-git commit -m "feat: add portal mini-scene components"
-```
-
-**Verification:** All three portals show animated 3D scenes on hover
+**Verification:** ✅ All three portals show animated 3D scenes on hover
 
 ---
 
