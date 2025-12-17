@@ -20,7 +20,7 @@ export interface SocialLink {
 export const navLinks: NavLink[] = [
   { key: 'music', label: 'music', href: '/music', color: '#ef4136', tailwindColor: 'text-ember', ready: false },
   { key: 'work', label: 'work', href: '/work', color: '#50d2cb', tailwindColor: 'text-signal', ready: false },
-  { key: 'code', label: 'code', href: '/code', color: '#7ec245', tailwindColor: 'text-pulse', ready: false },
+  { key: 'code', label: 'code', href: '/concepts', color: '#7ec245', tailwindColor: 'text-pulse', ready: true },
 ]
 
 export const socialLinks: SocialLink[] = [
