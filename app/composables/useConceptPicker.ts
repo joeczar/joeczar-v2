@@ -1,7 +1,7 @@
-type Concept = 'canvas' | 'glitch'
+type Concept = 'canvas' | 'glitch' | 'plasma'
 
 const STORAGE_KEY = 'joeczar-concept'
-const CONCEPTS: Concept[] = ['canvas', 'glitch']
+const CONCEPTS: Concept[] = ['canvas', 'glitch', 'plasma']
 
 export function useConceptPicker() {
   const currentConcept = useState<Concept>('concept', () => 'canvas')
@@ -55,9 +55,11 @@ export function useConceptPicker() {
     return picked
   }
 
-  // Switch to other concept (for Konami code)
+  // Cycle to next concept (for Konami code)
   function toggle() {
-    const next: Concept = currentConcept.value === 'canvas' ? 'glitch' : 'canvas'
+    const currentIndex = CONCEPTS.indexOf(currentConcept.value)
+    const nextIndex = (currentIndex + 1) % CONCEPTS.length
+    const next = CONCEPTS[nextIndex]
     savePreference(next)
     currentConcept.value = next
     return next

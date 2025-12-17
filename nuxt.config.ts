@@ -6,8 +6,12 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/content',
     '@nuxtjs/tailwindcss',
-    '@tresjs/nuxt'
+    '@tresjs/nuxt',
+    'nuxt-og-image'
   ],
+  ogImage: {
+    fonts: ['Space+Grotesk:700', 'Space+Mono:400']
+  },
   css: ['~/assets/css/main.css'],
   devtools: { enabled: true },
   tres: {
@@ -25,19 +29,17 @@ export default defineNuxtConfig({
       title: 'Joe Czarnecki',
       meta: [
         { name: 'description', content: 'Musician · Maker · Developer' },
-        // Open Graph
-        { property: 'og:type', content: 'website' },
+        // Open Graph (image handled by nuxt-og-image)
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        // Component-level SEO via useSeoMeta is preferred, but these are good defaults
         { property: 'og:title', content: 'Joe Czarnecki' },
         { property: 'og:description', content: 'Musician · Maker · Developer' },
-        { property: 'og:image', content: '/og-image.png' },
-        { property: 'og:url', content: 'https://joeczarnecki.com' },
-        // Twitter Card
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: 'Joe Czarnecki' },
-        { name: 'twitter:description', content: 'Musician · Maker · Developer' },
-        { name: 'twitter:image', content: '/og-image.png' }
+        { property: 'og:image', content: 'https://joeczarnecki.com/pwa-512x512.png' }, // Placeholder domain
+        { name: 'twitter:card', content: 'summary_large_image' }
       ],
       link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'apple-touch-icon', href: '/pwa-192x192.png' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap' }

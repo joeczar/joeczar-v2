@@ -1,4 +1,9 @@
 <script setup lang="ts">
+// Dynamic OG image that evolves with each view
+defineOgImage({
+  component: 'OgImageTemplate'
+})
+
 const { currentConcept, init, toggle } = useConceptPicker()
 const isTransitioning = ref(false)
 
@@ -37,6 +42,9 @@ useKonamiCode(() => {
 
     <!-- Glitch Concept -->
     <ConceptsGlitchConcept v-else-if="currentConcept === 'glitch'" />
+
+    <!-- Plasma Concept -->
+    <ConceptsPlasmaConcept v-else-if="currentConcept === 'plasma'" />
   </div>
 </template>
 
