@@ -6,6 +6,10 @@ export default defineNuxtConfig({
     port: 3333
   },
   modules: ['@nuxt/content', '@tresjs/nuxt', 'nuxt-og-image', 'shadcn-nuxt'],
+  shadcn: {
+    prefix: '',
+    componentDir: './app/components/ui'
+  },
   vite: {
     plugins: [tailwindcss()]
   },
