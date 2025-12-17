@@ -2,6 +2,10 @@
 const hasEntered = ref(false)
 const isGlitching = ref(false)
 const isMajorGlitch = ref(false)
+const isViewportShift = ref(false)
+
+// Viewport shift - random position for the oversized text
+const viewportOffset = ref({ x: 0, y: 0 })
 
 // Text fitting - adjust font-size to fill screen width (Safari-compatible)
 const line1Ref = ref<HTMLElement>()
@@ -98,10 +102,14 @@ onMounted(() => {
       triggerMajorGlitch()
     }
   }, 1500)
+
+  // Start ambient viewport drift
+  startViewportDrift()
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', fitText)
+  if (driftInterval) clearInterval(driftInterval)
 })
 
 function triggerGlitch() {
@@ -114,10 +122,47 @@ function triggerGlitch() {
 function triggerMajorGlitch() {
   isMajorGlitch.value = true
   isGlitching.value = true
+
+  // Trigger viewport shift during major glitch
+  triggerViewportShift()
+
   setTimeout(() => {
     isMajorGlitch.value = false
     isGlitching.value = false
   }, 200 + Math.random() * 300)
+}
+
+function triggerViewportShift() {
+  isViewportShift.value = true
+
+  // Random offset to show different parts of the oversized text
+  // Negative Y moves text up (shows bottom), positive moves down (shows top)
+  viewportOffset.value = {
+    x: (Math.random() - 0.5) * 100, // -50 to 50px horizontal jitter
+    y: (Math.random() - 0.3) * 400  // Bias towards showing more of the text
+  }
+
+  setTimeout(() => {
+    // Snap back or to another position
+    if (Math.random() > 0.5) {
+      viewportOffset.value = { x: 0, y: 0 }
+    }
+    isViewportShift.value = false
+  }, 150 + Math.random() * 200)
+}
+
+// Occasional viewport drift - slow ambient movement
+let driftInterval: ReturnType<typeof setInterval>
+function startViewportDrift() {
+  driftInterval = setInterval(() => {
+    if (!isGlitching.value && !isMajorGlitch.value) {
+      // Subtle drift when not glitching
+      viewportOffset.value = {
+        x: Math.sin(Date.now() / 3000) * 20,
+        y: Math.sin(Date.now() / 4000) * 30
+      }
+    }
+  }, 50)
 }
 </script>
 
@@ -149,7 +194,11 @@ function triggerMajorGlitch() {
         :class="{
           'entered': hasEntered,
           'glitch-active': isGlitching,
-          'major-glitch': isMajorGlitch
+          'major-glitch': isMajorGlitch,
+          'viewport-shift': isViewportShift
+        }"
+        :style="{
+          transform: `translate(${viewportOffset.x}px, ${viewportOffset.y}px)`
         }"
         @click="triggerMajorGlitch"
       >
@@ -222,26 +271,40 @@ function triggerMajorGlitch() {
         </div>
       </div>
 
-      <!-- Entry points - subtle, bottom corner -->
-      <div class="absolute bottom-20 left-4 md:left-8 flex flex-col gap-2 font-mono text-xs z-10">
-        <a
-          v-for="point in [
-            { key: 'music', color: 'hover:text-ember' },
-            { key: 'work', color: 'hover:text-signal' },
-            { key: 'code', color: 'hover:text-pulse' }
-          ]"
-          :key="point.key"
-          href="#"
-          class="text-silver/40 transition-colors duration-300"
-          :class="point.color"
-        >
-          {{ point.key }}
-        </a>
-      </div>
+      <!-- Terminal window - dark glass, Linux style -->
+      <div class="absolute bottom-6 left-4 md:left-8 z-10 terminal-window">
+        <!-- Terminal content -->
+        <div class="p-3 font-mono text-xs space-y-0.5">
+          <!-- User prompt -->
+          <div class="text-silver/40 text-[10px] mb-2">
+            <span class="text-pulse/50">joe</span><span class="text-silver/30">@</span><span class="text-signal/50">void</span><span class="text-silver/30">:~$</span>
+          </div>
 
-      <!-- Social -->
-      <div class="absolute bottom-8 left-4 md:left-8 z-10">
-        <SocialLinks size="sm" class="font-mono opacity-30 hover:opacity-100 transition-opacity" />
+          <a
+            v-for="point in [
+              { key: 'music', color: 'text-ember' },
+              { key: 'work', color: 'text-signal' },
+              { key: 'code', color: 'text-pulse' }
+            ]"
+            :key="point.key"
+            href="#"
+            class="block text-silver/50 hover:text-bone transition-colors duration-200 group"
+          >
+            <span class="text-silver/30 group-hover:text-silver/50">cd</span>
+            <span :class="point.color" class="opacity-70 group-hover:opacity-100 ml-1">./{{ point.key }}</span>
+          </a>
+
+          <!-- Blinking cursor line -->
+          <div class="text-silver/40 flex items-center mt-2">
+            <span class="text-pulse/50">joe</span><span class="text-silver/30">@</span><span class="text-signal/50">void</span><span class="text-silver/30">:~$</span>
+            <span class="terminal-cursor ml-1">▌</span>
+          </div>
+        </div>
+
+        <!-- Social links inside terminal -->
+        <div class="px-3 pb-3 pt-1 border-t border-white/5">
+          <SocialLinks size="sm" class="font-mono text-silver/30 hover:text-silver/60" />
+        </div>
       </div>
     </div>
   </div>
@@ -310,6 +373,7 @@ function triggerMajorGlitch() {
 /* Name container */
 .name-container {
   position: relative;
+  transition: transform 0.05s ease-out;
 }
 
 /* Entrance animation - slides in from left */
@@ -569,5 +633,33 @@ function triggerMajorGlitch() {
   50% { filter: none; }
   75% { filter: invert(1); }
   80% { filter: none; }
+}
+
+/* Viewport shift transition */
+.viewport-shift {
+  transition: transform 0.02s steps(2);
+}
+
+/* Terminal window - dark glass effect */
+.terminal-window {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  box-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  min-width: 180px;
+}
+
+/* Terminal blinking cursor */
+.terminal-cursor {
+  animation: cursor-blink 1s steps(1) infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 </style>
