@@ -1,22 +1,17 @@
 <script setup lang="ts">
-// Fetch and increment counter when OG image is generated
-const { data } = await useFetch('/api/og-count')
-const count = data.value?.count ?? 0
-
 // =============================================================================
-// CONFIGURABLE PARAMETERS (locked in values)
+// CONFIGURABLE PARAMETERS
 // =============================================================================
 const GRID_COLS = 60        // Number of LEDs horizontally
 const GRID_ROWS = 30        // Number of LEDs vertically
 const LED_SIZE = 8          // Size of each LED in pixels
 const LED_GAP = 20          // Gap between LEDs
 const PLASMA_SCALE = 0.30   // How "zoomed in" the plasma is (smaller = larger waves)
-const PLASMA_SPEED = 0.02   // How much the plasma changes per count
 
 // =============================================================================
 // PLASMA CALCULATION
 // =============================================================================
-const time = count * PLASMA_SPEED
+const time = 0.5  // Static plasma state
 
 function plasma(x: number, y: number): number {
   // Classic plasma formula - layered sine waves
@@ -86,9 +81,6 @@ for (let row = 0; row < GRID_ROWS; row++) {
 // Calculate total grid dimensions
 const gridWidth = GRID_COLS * (LED_SIZE + LED_GAP) - LED_GAP
 const gridHeight = GRID_ROWS * (LED_SIZE + LED_GAP) - LED_GAP
-
-// Special milestones
-const isSpecial = [66, 100, 333, 420, 666, 777, 1000, 1337, 2000, 5000, 10000].includes(count)
 </script>
 
 <template>
@@ -158,25 +150,5 @@ const isSpecial = [66, 100, 333, 420, 666, 777, 1000, 1337, 2000, 5000, 10000].i
       </div>
     </div>
 
-    <!-- Generation counter -->
-    <div
-      class="absolute bottom-4 right-4 text-xs font-mono z-10"
-      :style="{ color: '#4a4a4a' }"
-    >
-      #{{ count }}
-    </div>
-
-    <!-- Special badge for milestones -->
-    <div
-      v-if="isSpecial"
-      class="absolute top-4 right-4 px-2 py-1 text-xs font-mono z-10"
-      :style="{
-        color: '#ffa500',
-        border: '1px solid #ffa500',
-        backgroundColor: 'rgba(0,0,0,0.5)'
-      }"
-    >
-      RARE #{{ count }}
-    </div>
   </div>
 </template>
