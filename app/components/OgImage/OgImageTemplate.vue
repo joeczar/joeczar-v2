@@ -83,17 +83,26 @@ const gridHeight = config.rows * (config.ledSize + config.ledGap) - config.ledGa
     </div>
 
     <!-- Dark overlay for text readability -->
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.7)_0%,rgba(0,0,0,0.3)_100%)]" />
+    <div
+      class="absolute inset-0"
+      :style="{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%)' }"
+    />
 
     <!-- Main text -->
     <div class="relative z-10 text-center">
-      <div class="text-[11rem] font-bold tracking-tighter leading-none text-bone [text-shadow:0_2px_20px_rgba(0,0,0,0.8)]">
+      <div
+        class="text-[11rem] font-bold tracking-tighter leading-none"
+        :style="{ color: '#e8e8e6', textShadow: '0 2px 20px rgba(0,0,0,0.8)' }"
+      >
         <div>JOE</div>
         <div>CZARNECKI</div>
       </div>
 
       <!-- Subtitle -->
-      <div class="mt-8 text-5xl tracking-widest text-bone">
+      <div
+        class="mt-8 text-5xl tracking-widest"
+        :style="{ color: '#e8e8e6' }"
+      >
         musician · maker · developer
       </div>
     </div>
