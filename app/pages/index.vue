@@ -1,9 +1,7 @@
 <script setup lang="ts">
 const concepts = [
-  { path: '/concepts/canvas', name: 'Canvas', description: 'Particle field + 3D parallax' },
-  { path: '/concepts/glitch', name: 'Glitch', description: 'Brutalist type + distortion' },
-  { path: '/concepts/organism', name: 'Organism', description: 'Connected nodes + bioluminescence' },
-  { path: '/concepts/portal', name: 'Portal', description: 'Calm surface + peek-inside worlds' }
+  { path: '/concepts/canvas', name: 'Canvas', description: 'Floating 3D objects + parallax' },
+  { path: '/concepts/glitch', name: 'Glitch', description: 'Brutalist type + aggressive distortion' }
 ]
 </script>
 

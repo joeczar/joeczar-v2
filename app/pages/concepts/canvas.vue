@@ -40,9 +40,9 @@ const activePoint = ref<string | null>(null)
         musician · maker · developer
       </p>
 
-      <!-- Entry points -->
+      <!-- Entry points with 3D objects -->
       <div class="pointer-events-auto">
-        <EntryPoints @hover="activePoint = $event" />
+        <CanvasEntryPoints @hover="activePoint = $event" />
       </div>
 
       <!-- Social links -->
