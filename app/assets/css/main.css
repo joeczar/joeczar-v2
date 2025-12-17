@@ -1,10 +1,47 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* Fonts */
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  /* Primary palette */
+  --color-void: #0a0a0b;
+  --color-smoke: #1a1a1d;
+  --color-ash: #2d2d30;
+  --color-silver: #a0a0a3;
+  --color-bone: #e8e8e6;
+
+  /* Accent colors */
+  --color-ember: #ef4136;
+  --color-signal: #50d2cb;
+  --color-pulse: #7ec245;
+
+  /* Effects */
+  --color-glow: #f0f0f0;
+
+  /* Animations */
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-breathe: breathe 8s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
 
 @layer base {
   html {
-    @apply bg-void text-bone antialiased;
+    @apply antialiased;
   }
 
   body {
@@ -19,5 +56,88 @@
 @layer components {
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r;
+  }
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  /* Using site's dark theme as default */
+  --background: #0a0a0b; /* void */
+  --foreground: #e8e8e6; /* bone */
+  --card: #1a1a1d; /* smoke */
+  --card-foreground: #e8e8e6; /* bone */
+  --popover: #1a1a1d; /* smoke */
+  --popover-foreground: #e8e8e6; /* bone */
+  --primary: #e8e8e6; /* bone */
+  --primary-foreground: #0a0a0b; /* void */
+  --secondary: #2d2d30; /* ash */
+  --secondary-foreground: #e8e8e6; /* bone */
+  --muted: #2d2d30; /* ash */
+  --muted-foreground: #a0a0a3; /* silver */
+  --accent: #2d2d30; /* ash */
+  --accent-foreground: #e8e8e6; /* bone */
+  --destructive: #ef4136; /* ember */
+  --border: #2d2d30; /* ash */
+  --input: #2d2d30; /* ash */
+  --ring: #a0a0a3; /* silver */
+  --chart-1: #ef4136; /* ember */
+  --chart-2: #50d2cb; /* signal */
+  --chart-3: #7ec245; /* pulse */
+  --chart-4: #f0f0f0; /* glow */
+  --chart-5: #a0a0a3; /* silver */
+  --sidebar: #1a1a1d; /* smoke */
+  --sidebar-foreground: #e8e8e6; /* bone */
+  --sidebar-primary: #e8e8e6; /* bone */
+  --sidebar-primary-foreground: #0a0a0b; /* void */
+  --sidebar-accent: #2d2d30; /* ash */
+  --sidebar-accent-foreground: #e8e8e6; /* bone */
+  --sidebar-border: #2d2d30; /* ash */
+  --sidebar-ring: #a0a0a3; /* silver */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }

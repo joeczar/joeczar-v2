@@ -127,46 +127,88 @@ const { activeNavLinks, socialLinks } = useSiteLinks()
           <button @click="showControls = false" class="text-silver hover:text-white">&times;</button>
         </div>
 
-        <div class="space-y-1">
+        <div class="space-y-2">
           <label class="text-silver flex justify-between">
             <span>Columns: {{ GRID_COLS }}</span>
           </label>
-          <input v-model.number="GRID_COLS" type="range" min="10" max="120" class="w-full" />
+          <Slider
+            :model-value="[GRID_COLS]"
+            :min="10"
+            :max="120"
+            :step="1"
+            class="plasma-slider"
+            @update:model-value="(v) => GRID_COLS = v[0]"
+          />
         </div>
 
-        <div class="space-y-1">
+        <div class="space-y-2">
           <label class="text-silver flex justify-between">
             <span>Rows: {{ GRID_ROWS }}</span>
           </label>
-          <input v-model.number="GRID_ROWS" type="range" min="5" max="60" class="w-full" />
+          <Slider
+            :model-value="[GRID_ROWS]"
+            :min="5"
+            :max="60"
+            :step="1"
+            class="plasma-slider"
+            @update:model-value="(v) => GRID_ROWS = v[0]"
+          />
         </div>
 
-        <div class="space-y-1">
+        <div class="space-y-2">
           <label class="text-silver flex justify-between">
             <span>LED Size: {{ LED_SIZE }}px</span>
           </label>
-          <input v-model.number="LED_SIZE" type="range" min="4" max="40" class="w-full" />
+          <Slider
+            :model-value="[LED_SIZE]"
+            :min="4"
+            :max="40"
+            :step="1"
+            class="plasma-slider"
+            @update:model-value="(v) => LED_SIZE = v[0]"
+          />
         </div>
 
-        <div class="space-y-1">
+        <div class="space-y-2">
           <label class="text-silver flex justify-between">
             <span>Gap: {{ LED_GAP }}px</span>
           </label>
-          <input v-model.number="LED_GAP" type="range" min="0" max="40" class="w-full" />
+          <Slider
+            :model-value="[LED_GAP]"
+            :min="0"
+            :max="40"
+            :step="1"
+            class="plasma-slider"
+            @update:model-value="(v) => LED_GAP = v[0]"
+          />
         </div>
 
-        <div class="space-y-1">
+        <div class="space-y-2">
           <label class="text-silver flex justify-between">
             <span>Scale: {{ PLASMA_SCALE.toFixed(2) }}</span>
           </label>
-          <input v-model.number="PLASMA_SCALE" type="range" min="0.02" max="0.5" step="0.01" class="w-full" />
+          <Slider
+            :model-value="[PLASMA_SCALE]"
+            :min="0.02"
+            :max="0.5"
+            :step="0.01"
+            class="plasma-slider"
+            @update:model-value="(v) => PLASMA_SCALE = v[0]"
+          />
         </div>
 
-        <div class="space-y-1">
+        <div class="space-y-2">
           <label class="text-silver flex justify-between">
             <span>Speed: {{ PLASMA_SPEED.toFixed(3) }}</span>
           </label>
-          <input v-model.number="PLASMA_SPEED" type="range" min="0.005" max="0.1" step="0.005" class="w-full" />
+          <Slider
+            :model-value="[PLASMA_SPEED]"
+            :min="0.005"
+            :max="0.1"
+            :step="0.005"
+            class="plasma-slider"
+            @update:model-value="(v) => PLASMA_SPEED = v[0]"
+          />
         </div>
       </div>
     </Transition>
@@ -251,6 +293,8 @@ const { activeNavLinks, socialLinks } = useSiteLinks()
 </template>
 
 <style scoped>
+@reference "tailwindcss";
+
 .slide-enter-active,
 .slide-leave-active {
   transition: all 0.3s ease;
@@ -260,5 +304,24 @@ const { activeNavLinks, socialLinks } = useSiteLinks()
 .slide-leave-to {
   opacity: 0;
   transform: translateX(-20px);
+}
+
+/* Amber-themed sliders for plasma controls */
+.plasma-slider :deep([data-slot="slider-track"]) {
+  background-color: rgb(69 26 3 / 0.5);
+}
+
+.plasma-slider :deep([data-slot="slider-range"]) {
+  background: linear-gradient(to right, #d97706, #fbbf24);
+}
+
+.plasma-slider :deep([data-slot="slider-thumb"]) {
+  background-color: #fbbf24;
+  border-color: #f59e0b;
+  box-shadow: 0 0 8px rgb(245 158 11 / 0.5);
+}
+
+.plasma-slider :deep([data-slot="slider-thumb"]:hover) {
+  box-shadow: 0 0 0 4px rgb(245 158 11 / 0.3);
 }
 </style>

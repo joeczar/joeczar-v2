@@ -1,14 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import tailwindcss from '@tailwindcss/vite'
+
 export default defineNuxtConfig({
   devServer: {
     port: 3333
   },
-  modules: [
-    '@nuxt/content',
-    '@nuxtjs/tailwindcss',
-    '@tresjs/nuxt',
-    'nuxt-og-image'
-  ],
+  modules: ['@nuxt/content', '@tresjs/nuxt', 'nuxt-og-image', 'shadcn-nuxt'],
+  vite: {
+    plugins: [tailwindcss()]
+  },
   ogImage: {
     fonts: ['Space+Grotesk:700', 'Space+Mono:400']
   },
