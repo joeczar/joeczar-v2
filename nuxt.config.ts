@@ -19,9 +19,23 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   app: {
     head: {
+      htmlAttrs: {
+        lang: 'en'
+      },
       title: 'Joe Czarnecki',
       meta: [
-        { name: 'description', content: 'Musician · Maker · Developer' }
+        { name: 'description', content: 'Musician · Maker · Developer' },
+        // Open Graph
+        { property: 'og:type', content: 'website' },
+        { property: 'og:title', content: 'Joe Czarnecki' },
+        { property: 'og:description', content: 'Musician · Maker · Developer' },
+        { property: 'og:image', content: '/og-image.png' },
+        { property: 'og:url', content: 'https://joeczarnecki.com' },
+        // Twitter Card
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'Joe Czarnecki' },
+        { name: 'twitter:description', content: 'Musician · Maker · Developer' },
+        { name: 'twitter:image', content: '/og-image.png' }
       ],
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },

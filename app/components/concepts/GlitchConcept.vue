@@ -5,16 +5,20 @@ const lines = ['JOE', 'CZAR', 'NECKI']
 const glitch = useGlitch()
 const { containerRef, lineRefs, fontSizes } = useFitText(lines)
 
+// Timer for cleanup
+let initTimer: ReturnType<typeof setTimeout> | null = null
+
 // Start glitch effects after entrance
 onMounted(() => {
   // Wait for text to fit, then enter and start glitching
-  setTimeout(() => {
+  initTimer = setTimeout(() => {
     glitch.enter()
     glitch.start()
   }, 100)
 })
 
 onUnmounted(() => {
+  if (initTimer) clearTimeout(initTimer)
   glitch.stop()
 })
 </script>

@@ -84,6 +84,12 @@ const material = new THREE.ShaderMaterial({
   blending: THREE.AdditiveBlending
 })
 
+// Cleanup on unmount to prevent memory leaks
+onUnmounted(() => {
+  geometry.dispose()
+  material.dispose()
+})
+
 // Animation loop - TresJS v5 uses useLoop instead of useRenderLoop
 const { onBeforeRender } = useLoop()
 onBeforeRender(({ elapsed }) => {
