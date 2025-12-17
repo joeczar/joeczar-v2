@@ -64,8 +64,13 @@ const gridHeight = config.rows * (config.ledSize + config.ledGap) - config.ledGa
   <div class="w-full h-full flex flex-col items-center justify-center relative overflow-hidden bg-[#050505] font-sans">
     <!-- LED Grid (inlined for Satori) -->
     <div
-      class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-      :style="{ width: `${gridWidth}px`, height: `${gridHeight}px` }"
+      class="absolute"
+      :style="{
+        width: `${gridWidth}px`,
+        height: `${gridHeight}px`,
+        left: `${(1200 - gridWidth) / 2}px`,
+        top: `${(630 - gridHeight) / 2}px`
+      }"
     >
       <div
         v-for="(led, i) in leds"
