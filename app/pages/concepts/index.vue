@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const { currentConcept, prefersReducedMotion, setConcept } = useConceptPicker()
+const { currentConcept, prefersReducedMotion, setConcept, init } = useConceptPicker()
+
+// Initialize on mount to read from localStorage
+onMounted(() => {
+  init()
+})
 
 const concepts = [
   {
@@ -39,7 +44,7 @@ function selectAndGo(key: 'canvas' | 'glitch' | 'plasma') {
         current: <span class="text-signal">{{ currentConcept }}</span>
       </p>
       <p v-if="prefersReducedMotion" class="text-pulse">
-        reduced motion detected → defaults to canvas
+        reduced motion detected → canvas or plasma only
       </p>
       <p class="text-silver/30">
         tip: Konami code switches concepts ↑↑↓↓←→←→BA

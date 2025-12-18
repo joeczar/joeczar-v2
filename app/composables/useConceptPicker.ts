@@ -2,6 +2,7 @@ type Concept = 'canvas' | 'glitch' | 'plasma'
 
 const STORAGE_KEY = 'joeczar-concept'
 const CONCEPTS: Concept[] = ['canvas', 'glitch', 'plasma']
+const REDUCED_MOTION_CONCEPTS: Concept[] = ['canvas', 'plasma']
 
 export function useConceptPicker() {
   const currentConcept = useState<Concept>('concept', () => 'canvas')
@@ -31,18 +32,33 @@ export function useConceptPicker() {
     return CONCEPTS[Math.floor(Math.random() * CONCEPTS.length)] ?? 'canvas'
   }
 
+  // Pick random from reduced motion friendly concepts
+  function pickRandomReducedMotion(): Concept {
+    return REDUCED_MOTION_CONCEPTS[Math.floor(Math.random() * REDUCED_MOTION_CONCEPTS.length)] ?? 'canvas'
+  }
+
   // Initialize - call this on mount
   function init(): Concept {
     prefersReducedMotion.value = checkReducedMotion()
 
-    // Reduced motion users always get canvas (calmer experience)
+    // Check for existing preference first
+    const saved = getSaved()
+
+    // Reduced motion users get canvas or plasma (calmer experiences)
     if (prefersReducedMotion.value) {
-      currentConcept.value = 'canvas'
-      return 'canvas'
+      // If they have a saved preference that's reduced-motion friendly, use it
+      if (saved && REDUCED_MOTION_CONCEPTS.includes(saved)) {
+        currentConcept.value = saved
+        return saved
+      }
+      // Otherwise pick randomly from calm options
+      const picked = pickRandomReducedMotion()
+      savePreference(picked)
+      currentConcept.value = picked
+      return picked
     }
 
-    // Check for existing preference
-    const saved = getSaved()
+    // Regular users: use saved preference if exists
     if (saved) {
       currentConcept.value = saved
       return saved
