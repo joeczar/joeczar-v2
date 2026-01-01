@@ -13,7 +13,7 @@ export interface SocialLink {
   key: string
   label: string
   href: string
-  icon: 'github' | 'linkedin' | 'file'
+  icon: 'star' | 'github' | 'linkedin' | 'file'
   external: boolean
 }
 
@@ -26,7 +26,7 @@ export const navLinks: NavLink[] = [
 export const socialLinks: SocialLink[] = [
   { key: 'github', label: 'GitHub', href: 'https://github.com/joeczar', icon: 'github', external: true },
   { key: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/joe-czar/', icon: 'linkedin', external: true },
-  { key: 'cv', label: 'CV', href: '/Joe_Czarnecki_Deutsch_2023.pdf', icon: 'file', external: false },
+  { key: 'rolllercoaster', label: 'rollercoaster.dev', href: 'https://rollercoaster.dev', icon: 'star', external: true },
 ]
 
 export function useSiteLinks() {
