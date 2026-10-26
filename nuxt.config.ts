@@ -16,6 +16,15 @@ export default defineNuxtConfig({
   ogImage: {
     fonts: ['Space+Grotesk:700', 'Space+Mono:400']
   },
+  content: {
+    build: {
+      markdown: {
+        highlight: {
+          theme: 'github-dark',
+        },
+      },
+    },
+  },
   css: ['~/assets/css/main.css'],
   devtools: { enabled: true },
   tres: {
