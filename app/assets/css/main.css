@@ -141,3 +141,49 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Blog post body */
+@layer components {
+  .prose-post {
+    @apply text-bone leading-relaxed;
+  }
+  .prose-post > * + * {
+    @apply mt-5;
+  }
+  .prose-post h2 {
+    @apply mt-10 text-2xl font-semibold;
+  }
+  .prose-post h3 {
+    @apply mt-8 text-xl font-semibold;
+  }
+  .prose-post a {
+    @apply text-signal underline underline-offset-4 hover:text-bone;
+  }
+  .prose-post ul {
+    @apply list-disc pl-6;
+  }
+  .prose-post ol {
+    @apply list-decimal pl-6;
+  }
+  .prose-post li + li {
+    @apply mt-1;
+  }
+  .prose-post blockquote {
+    @apply border-l-2 border-ash pl-4 text-silver italic;
+  }
+  .prose-post code {
+    @apply rounded bg-smoke px-1 py-0.5 font-mono text-sm text-signal;
+  }
+  .prose-post pre {
+    @apply overflow-x-auto rounded-lg bg-smoke p-4;
+  }
+  .prose-post pre code {
+    @apply bg-transparent p-0 text-bone;
+  }
+  .prose-post img {
+    @apply rounded-lg;
+  }
+  .prose-post hr {
+    @apply border-ash;
+  }
+}
