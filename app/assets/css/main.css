@@ -147,8 +147,8 @@
   .prose-post {
     @apply text-bone leading-relaxed;
   }
-  .prose-post > * + * {
-    @apply mt-5;
+  .prose-post :is(p, ul, ol, pre, blockquote, img, hr, table) {
+    @apply my-6;
   }
   .prose-post h2 {
     @apply mt-10 text-2xl font-semibold;
@@ -166,7 +166,7 @@
     @apply list-decimal pl-6;
   }
   .prose-post li + li {
-    @apply mt-1;
+    @apply mt-2;
   }
   .prose-post blockquote {
     @apply border-l-2 border-ash pl-4 text-silver italic;
